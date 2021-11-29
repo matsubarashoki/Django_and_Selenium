@@ -4,8 +4,9 @@ from django.http import Http404
 from django.db.models.query import QuerySet
 from django.shortcuts import redirect, render
 from django.views import generic
+from blog import form
 from blog.models import BlogPost,Comment
-from blog.form import CommentForm
+from blog.form import CommentForm, InquiryForm
 # Create your views here.
 
 class BlogView(generic.ListView):
@@ -64,3 +65,8 @@ class BlogArticle(generic.View):
         #return render(request,"post.html")
         url = '/blog-detail/'+ str(pk)
         return redirect(to=url)
+
+class InquiryView(generic.FormView):
+    template_name = "inquiry.html"
+    form_class = InquiryForm
+
