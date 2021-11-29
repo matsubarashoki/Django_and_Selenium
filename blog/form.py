@@ -16,3 +16,6 @@ class CommentForm(ModelForm):
     
     def __init__(self, *args, **kwargs):
         super(CommentForm, self).__init__(*args, **kwargs)
+
+        self.fields['comment'].widget.attrs['placeholder'] = 'コメントを入力してください'
+        self.fields['comment'].widget.attrs['class'] = 'form-control'
