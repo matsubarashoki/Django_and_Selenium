@@ -61,6 +61,6 @@ class BlogArticle(generic.View):
         print(data)
         data.save()
         
-        return render(request,"post.html")
-            # url = '/blog-detail/'+ id
-            # return redirect(to=url)
+        #return render(request,"post.html")
+        url = '/blog-detail/'+ str(pk)
+        return redirect(to=url)
