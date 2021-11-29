@@ -1,0 +1,18 @@
+<!--base.htmlを適用-->
+{% extends 'base.html' %}
+<!--ヘッダー情報のページタイトルを設定する-->
+{% block title %}youtube-text{% endblock %}
+
+{% block contents %}
+
+<label>505 Server Error<br>システム管理者に連絡してください。
+    <br><a class="hover-under" href="{% url 'user_setting:login' %}">トップページへ戻る</a></label>
+
+{% comment "下記の部分は一時的にコメントアウト" %}
+加えて、覚えておいた方がよいこととして、DEBUG = Trueの場合は、500.htmlが存在したとしても、画面には汎用エラー画面ではなくデバッグ情報を表示するというのがDjangoの仕様です。
+従って、DEBUG = Trueの開発環境では、汎用エラー画面が表示されることは動作確認できません。
+このことを知らないと、開発時に「あれ？500.htmlを配置したのに使われないぞ？何か間違ってるのかな？」と焦ります
+{% endcomment %}
+
+
+{% endblock %}

@@ -1,0 +1,53 @@
+<!-- ベーステンプレートを適用する -->
+{% extends 'base.html' %}
+<!-- ヘッダー情報のページタイトルを設定する -->
+{% block title %}News{% endblock %}
+
+{% block contents %}
+<div class="album py-5 bg-light">
+  <!--Bootstrapのグリッドシステムを適用-->
+  <div class="container">
+    <!--行要素を配置-->
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+      {% for news in top_headlines.articles %}
+      <!--列要素を配置-->
+      <div class="col">
+        <div class="card shadow-sm">
+          <!-- svgタグをimgに変更
+                src属性を追加して1枚目のイメージのURLを設定 -->
+          <img src="{{ news.urlToImage }}" class="bd-placeholder-img card-img-top" width="100%" height="250"
+            xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
+            preserveAspectRatio="xMidYMid slice" focusable="false">
+          <title>Placeholder</title>
+          <rect width="100%" height="100%" fill="#55595c" />
+          <!-- <text>～</text>を削除 -->
+          </img>
+          <!--タイトルとボタンを出力するブロック-->
+          <div class="card-body">
+            <!--タイトルを出力-->
+            <p class="card-text">
+              {{ news.title }}
+            </p>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="btn-group">
+                <!-- 詳細ページを表示するボタン -->
+                <!-- リンク先のURL: photo-detail/<Photo postsテーブルのid値> -->
+                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="location.href='#'">View</button>
+                <!-- カテゴリを表示するボタン -->
+                <!-- リンク先のURL: photos/<Categorysテーブルのid値> -->
+                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="location.href='#'">
+                  <!-- {{record.category.title}} -->
+                </button>
+              </div>
+              <!-- 投稿したユーザー名を出力し、一覧ページへのリンクを設定 -->
+
+              <small class="text-muted">{{ news.author }}</small></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

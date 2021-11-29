@@ -1,0 +1,11 @@
+<!--base.htmlを適用-->
+{% extends 'base.html' %}
+<!--ヘッダー情報のページタイトルを設定する-->
+{% block title %}youtube-text{% endblock %}
+
+{% block contents %}
+
+<label>403エラー<br>権限がありません。
+    <br><a class="hover-under" href="{% url 'user_setting:login' %}">トップページへ戻る</a></label>
+
+{% endblock %}

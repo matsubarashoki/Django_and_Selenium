@@ -1,0 +1,32 @@
+<!--base.htmlを適用-->
+{% extends 'base.html' %}
+<!--ヘッダー情報のページタイトルを設定する-->
+{% block title %}Result{% endblock %}
+
+{% block contents %}
+<section class="py-5 text-center container">
+    <div class="row py-lg-5">
+        <div class="col-lg-6 col-md-8 mx-auto">
+            <h1 class="fw-light">Result</h1>
+            <p class="lead text-muted">人間は、すぐに自分の気持ちを考えすぎてしまいます。
+                「自分が傷ついたかどうか」「自分は幸福なのか、不幸なのか」「自分は、どうなのか」というように、主語が自分になりがちなのです。
+                「私は」「僕は」と、まず主語が自分になり、「自分は、どうか」ということを考える癖があるならば、少し、この主語を変えて、その主語のところに、ほかのひとを置いてみてください。
+                あなたが、「自分の不幸の原因になっている」と思う人を主語にもってきて、その人の立場から考えてみていただきたいのです。(中略)
+                人間は、自分中心に物事を考えているうちは、なかなか幸福になれません。
+            </p>
+            <p>
+            <h2>{{ result }}</h2>
+            {% comment メッセージ %}{% endcomment %}
+            <ul class="messages" style="list-style:none;">
+                {% for message in messages %}
+                    <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>
+                        {{ message }}
+                    </li>
+                {% endfor %}
+            </ul>
+            </p>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
