@@ -1,13 +1,18 @@
+import logging
 from re import template
 from typing import List
 from django.http import Http404
 from django.db.models.query import QuerySet
 from django.shortcuts import redirect, render
 from django.views import generic
+from django.contrib import messages
+from django.urls import reverse_lazy
 from blog import form
 from blog.models import BlogPost,Comment
 from blog.form import CommentForm, InquiryForm
 # Create your views here.
+
+logger = logging.getLogger(__name__)
 
 class BlogView(generic.ListView):
     '''
@@ -69,4 +74,10 @@ class BlogArticle(generic.View):
 class InquiryView(generic.FormView):
     template_name = "inquiry.html"
     form_class = InquiryForm
+    success_url = reverse_lazy('blog:inquiry')
 
+    def form_valid(self, form):
+        form.send_email()
+        messages.success(self.request, 'メッセージを送信しました。')
+        logger.info('Inquiry send by {}'.format(form.cleaned_data['name']))
+        return super().form_valid(form)

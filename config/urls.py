@@ -10,4 +10,6 @@ urlpatterns = [
     path('',include('user_setting.urls')),
     #blogのURLパターンを追加
     path('',include('blog.urls')),
+    #allauthのURL
+    # path('accounts/',include('allauth.urls')),
 ]

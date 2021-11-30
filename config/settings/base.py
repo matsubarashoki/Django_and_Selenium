@@ -1,6 +1,7 @@
 import os
 import environ
 from pathlib import Path
+from django.contrib.messages import constants as messages
 
 # プロジェクト配置ディレクトリ
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -22,7 +23,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'user_setting.apps.User_SettingConfig',
     'youtube_text.apps.YoutubeTextConfig',
-    'blog.apps.BlogConfig'
+    'blog.apps.BlogConfig',
+    #認証機能用
+    # 'django.contrib.sites',
+    # 'allauth',
+    # 'allauth.account'
 ]
 
 MIDDLEWARE = [
@@ -42,6 +47,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        #ルートのtemplatesから読み込ませる
         'DIRS': [os.path.join(BASE_DIR,'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -121,52 +127,45 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #newsapi.NEWS_API
 NEWSAPI = env('NEWS_API')
 
-#ロギング設定
-LOG_BASE_DIR = BASE_DIR / 'config' / 'logs'
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "formatters": {"simple": {"format": "%(asctime)s [%(levelname)s] %(message)s"}},
-    "handlers": {
-        "info": {
-            "level": "INFO",
-            "class": "logging.handlers.RotatingFileHandler",
-            "filename": LOG_BASE_DIR / "info.log",
-            "formatter": "simple",
-            "maxBytes": 1024 * 1024 * 1,  # 1 MB, 
-            "backupCount": 5
-        },
-        "warning": {
-            "level": "WARNING",
-            "class": "logging.handlers.RotatingFileHandler",
-            "filename": LOG_BASE_DIR / "warning.log",
-            "formatter": "simple",
-            "maxBytes": 1024 * 1024 * 1,  # 1 MB, 
-            "backupCount": 5
-        },
-        "error": {
-            "level": "ERROR",
-            "class": "logging.handlers.RotatingFileHandler",
-            "filename": LOG_BASE_DIR / "error.log",
-            "formatter": "simple",
-            "maxBytes": 1024 * 1024 * 1,  # 1 MB, 
-            "backupCount": 5
-        }
-    },
-    "loggers": {
-        'django':{
-            "handlers": ["info", "warning", "error"],
-            "level": "INFO",
-        },
-        'youtube_text':{
-            "handlers": ["info", "warning", "error"],
-            "level": "INFO",
-        }
-    },
-
-}
-
 #ログイン強制しないパス
 PUBLIC_PATHS = [
 	'/login/',
 ]
+
+#BootStrap Alertsでメッセージの見た目適用
+MESSAGE_TAGS = {
+    messages.ERROR: 'alert alert-danger',
+    messages.WARNING: 'alert alert-warning',
+    messages.SUCCESS: 'alert alert-success',
+    messages.INFO: 'alert alert-info',
+}
+
+# #allauthで利用するdjango.contrib.sitesを使うためのサイト識別ID設定
+# SITE_ID = 1
+
+# AUTHENTICATION＿BACKENDS = (
+#     'allauth.account.auth_backends.AuthenticationBackend', #一般ユーザ向け（メアド認証
+#     'django.contrib.auth.backends.ModelBackend', #管理ユーザ向け（ユーザ名認証
+# )
+
+# #メアド認証に変更する設定
+# ACCOUNT_AUTHENTICATION_METHOD='email'
+# ACCOUNT_USERNAME_REQUIRED = False
+
+# #サインアップにメアド確認の設定
+# ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+# ACCOUNT_EMAIL_REQUIRED=True
+
+# #ログイン/ログアウト後の遷移先設定
+# LOGIN_REDIRECT_URL = 'blog:blog'
+# ACCOUNT_LOGOUT_REDIRECT_URL = 'user_setting:login'
+
+# #ログアウトリンク押下でログアウト
+# ACCOUNT_LOGOUT_ON_GET=True
+
+# #allauthが送信するメール件名に付与される接頭辞
+# ACCOUNT_EMAIL_SUBJECT_PREFIX=''
+
+# #デフォルトのメール送信元を設定
+# DEFAULT_FROM_EMAIL = 'admin@example.com'
+

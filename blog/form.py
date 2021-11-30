@@ -1,5 +1,6 @@
 from django.forms import ModelForm
 from django import forms
+from django.core.mail import EmailMessage
 from .models import Comment
 
 class CommentForm(ModelForm):
@@ -40,3 +41,29 @@ class InquiryForm(forms.Form):
         
         self.fields['message'].widget.attrs['class'] = 'form-control col-12'
         self.fields['message'].widget.attrs['placeholder'] = 'メッセージをここに入力してください'
+    
+    def send_email(self):
+        #cleande_dataはバリデーション
+        name = self.cleaned_data['name']
+        email = self.cleaned_data['email']
+        title = self.cleaned_data['title']
+        message = self.cleaned_data['message']
+
+        subject = 'お問い合わせ{}'.format(title)
+        message = '送信者: {0}\nメールアドレス:{1}\nメッセージ：{2}'.format(name,email,message)
+        from_email = 'admin@example.com'
+        to_list = [
+            'test@example.com'
+        ]
+        cc_list = [
+            email
+        ]
+        #DjangoのEmail機能を活用してメール送信
+        message = EmailMessage(
+            subject=subject,
+            body=message,
+            from_email=from_email,
+            to=to_list,
+            cc=cc_list
+        )
+        message.send()
