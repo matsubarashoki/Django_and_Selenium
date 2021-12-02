@@ -31,7 +31,7 @@ LOGGING = {
             "class": "logging.handlers.RotatingFileHandler",
             "filename": LOG_BASE_DIR / "info.log",
             "formatter": "simple",
-            "maxBytes": 1024 * 1024 * 1,  # 1 MB, 
+            "maxBytes": 1024 * 512 * 1,  # 1 MB, 
             "backupCount": 5
         },
         "warning": {
@@ -39,7 +39,7 @@ LOGGING = {
             "class": "logging.handlers.RotatingFileHandler",
             "filename": LOG_BASE_DIR / "warning.log",
             "formatter": "simple",
-            "maxBytes": 1024 * 1024 * 1,  # 1 MB, 
+            "maxBytes": 1024 * 512 * 1,  # 1 MB, 
             "backupCount": 5
         },
         "error": {
@@ -47,7 +47,7 @@ LOGGING = {
             "class": "logging.handlers.RotatingFileHandler",
             "filename": LOG_BASE_DIR / "error.log",
             "formatter": "simple",
-            "maxBytes": 1024 * 1024 * 1,  # 1 MB, 
+            "maxBytes": 1024 * 512 * 1,  # 1 MB, 
             "backupCount": 5
         }
     },

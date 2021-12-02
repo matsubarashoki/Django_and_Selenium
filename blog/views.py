@@ -1,16 +1,17 @@
 import logging
 from re import template
 from typing import List
+from django.contrib.messages.api import success
+from django.db.models import query
 from django.http import Http404
 from django.db.models.query import QuerySet
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views import generic
 from django.contrib import messages
 from django.urls import reverse_lazy
-from blog import form
+from blog import models
 from blog.models import BlogPost,Comment
 from blog.form import CommentForm, InquiryForm
-# Create your views here.
 
 logger = logging.getLogger(__name__)
 
@@ -31,7 +32,7 @@ class BlogView(generic.ListView):
     # BlogPostのレコードを投稿日時の降順で並べ替える
     queryset = BlogPost.objects.order_by('-posted_at')
 
-#DetailViewを継承して詳細ページのレンダリング
+#
 class BlogArticle(generic.View):
     '''　
     　詳細ページ　投稿記事の詳細 & Comment入力ページ
@@ -50,7 +51,7 @@ class BlogArticle(generic.View):
             comments = blog.comments.all().order_by('id')
             #コメント追加用Form生成
             form = CommentForm()
-            param = {'form':form,'object':blog,'comments':comments}
+            param = {'form':form,'blog':blog,'comments':comments}
             return render(request,"post.html",param)
         else:
            raise Http404("存在しません。")
@@ -81,3 +82,16 @@ class InquiryView(generic.FormView):
         messages.success(self.request, 'メッセージを送信しました。')
         logger.info('Inquiry send by {}'.format(form.cleaned_data['name']))
         return super().form_valid(form)
+
+class CommentDeleteView(generic.View):
+    model = Comment
+
+    def get(self,request):
+        pass
+    
+    def post(self,request,comment_blogpost_pk,comment_pk):
+        comment = Comment.objects.filter(pk=comment_pk)
+        comment.delete()
+
+        url = '/blog-detail/'+ str(comment_blogpost_pk)
+        return redirect(to=url)
