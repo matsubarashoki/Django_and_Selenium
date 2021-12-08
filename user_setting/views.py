@@ -12,7 +12,7 @@ class SignUpView(CreateView):
     # レンダリングするテンプレート
     template_name = "signup.html"
     # サインアップ完了後のリダイレクト先のURLパターン
-    success_url = reverse_lazy('accounts:signup_success')
+    success_url = reverse_lazy('user_setting:signup_success')
 
     def form_valid(self, form):
         '''CreateViewクラスのform_valid()をオーバーライド

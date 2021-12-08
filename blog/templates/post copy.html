@@ -81,7 +81,6 @@
         <div class="col offset-2">
             <form method="POST">
                 {% csrf_token %}
-                {{user}}
                 {{ form.comment }}
                 <hr>
                 <button type="submit">コメントする</button>

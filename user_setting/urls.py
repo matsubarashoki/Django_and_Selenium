@@ -18,7 +18,7 @@ urlpatterns = [
     # 「http(s)://<ホスト名>/signup/」へのアクセスに対して、
     # django.contrib.auth.views.LoginViewをインスタンス化して
     # ログインページを表示する
-    path('login/',
+    path('',
          # ログイン用のテンプレート(フォーム)をレンダリング
          auth_views.LoginView.as_view(template_name='login.html'),
          name='login'

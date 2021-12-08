@@ -129,7 +129,7 @@ NEWSAPI = env('NEWS_API')
 
 #ログイン強制しないパス
 PUBLIC_PATHS = [
-	'/login/',
+	'/',
 ]
 
 #BootStrap Alertsでメッセージの見た目適用

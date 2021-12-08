@@ -1,112 +1,69 @@
+<!-- ベーステンプレートの読み込み-->
+{% extends 'blog_base.html' %}
+<!-- static をロード-->
 {% load static %}
 
-<html lang="ja">
-
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <title>{% block title %}{% endblock %}</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-
-    <!-- Custom fonts for this template -->
-    <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="{% static 'css/one-page-wonder.min.css' %}" rel="stylesheet">
-
-    <!-- My style -->
-    <link rel="stylesheet" type="text/css" href="{% static 'css/mystyle.css' %}">
-    {% block head %}{% endblock %}
-  </head>
-
-  <body>
-	<div id="wrapper">
-        <!-- Navigation -->
-        <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
-          <div class="container">
-            <a class="navbar-brand" href="{% url 'blog:blog' %}">Portfolio</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
-              <ul class="navbar-nav mr-auto">
-                <li class="nav-item {% block active_inquiry %}{% endblock %}">
-                  <a class="nav-link" href="{% url 'blog:inquiry' %}">INQUIRY</a>
-                </li>
-              </ul>
-              <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                  <a class="nav-link" href="#">Sign Up</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">Log In</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </nav>
-        
-        {% if messages %}
-          <div class="container">
-              <div class="row">
-                  <div class="my-div-style w-100">
-                      <ul class="messages" style="list-style: none;">
-                          {% for message in messages %}
-                          <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>
-                              {{ message }}
-                          </li>
-                          {% endfor %}
-                      </ul>
-                  </div>
-              </div>
-          </div>
-        {% endif %}
-
-        <div class="container">
-            <div class="row">
-                <div class="my-div-style">
-                    <form method="post">
-                        {% csrf_token %}
-        
-                        {{ form.non_field_errors }}
-        
-                        {% for field in form %}
-                            <div class="form-group row">
-                                <label for="{{ field.id_for_label}}" class="col-sm-4 col-form-label">
-                                    <strong>{{ field.label_tag }}</strong>
-                                </label>
-                                <div class="col-sm-8">
-                                    {{ field }}
-                                    {{ field.errors }}
-                                </div>
-                            </div>
-                        {% endfor %}
-        
-                        <div class="offset-sm-4 col-sm8">
-                            <button class="btn btn-primary" type="submit">送信</button>
-                        </div>
-                    </form>
+<!-- Page Header-->
+{% block header %}
+<header class="masthead" style="background-image: url({% static 'assets/img/home-bg.jpg' %})">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="site-heading">
+                    <h1>Clean Blog</h1>
+                    <span class="subheading">A Blog Theme by Start Bootstrap</span>
                 </div>
             </div>
         </div>
-        <!-- Footer -->
-        <footer class="py-5 bg-black">
-          <div class="container">
-            <p class="m-0 text-center text-white small">Copyright &copy; Django_</p>
-          </div>
-          <!-- /.container -->
-        </footer>
+    </div>
+</header>
+{% endblock %}
+<!-- Main Content-->
+{% block contents %}
+<div class="col-lg-6 col-md-8 mx-auto">
+    <h1 class="fw-light">お問い合わせ</h1>
+</div>
+{% if messages %}
+<div class="container">
+    <div class="row">
+        <div class="my-div-style w-100">
+            <ul class="messages" style="list-style: none;">
+                {% for message in messages %}
+                <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>
+                    {{ message }}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endif %}
 
-        <!-- Bootstrap core JavaScript -->
-        <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
-        <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-  	</div>
-  </body>
+<div class="container">
+  <div class="row">
+      <div class="my-div-style">
+          <form method="post">
+              {% csrf_token %}
 
-</html>
+              {{ form.non_field_errors }}
+
+              {% for field in form %}
+                  <div class="form-group row">
+                      <label for="{{ field.id_for_label}}" class="col-sm-4 col-form-label">
+                          <strong>{{ field.label_tag }}</strong>
+                      </label>
+                      <div class="col-sm-8">
+                          {{ field }}
+                          {{ field.errors }}
+                      </div>
+                  </div>
+              {% endfor %}
+
+              <div class="offset-sm-4 col-sm8">
+                  <button class="btn btn-primary" type="submit">送信</button>
+              </div>
+          </form>
+      </div>
+  </div>
+</div>
+{% endblock %}

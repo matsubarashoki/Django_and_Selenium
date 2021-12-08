@@ -12,5 +12,7 @@ urlpatterns = [
     # PK複数の時はオブジェクトも指定する
     path('comment-delete/<int:comment_blogpost_pk>/<int:comment_pk>/', views.CommentDeleteView.as_view(), name='comment_delete'),   
 
+    path('comment_update/<int:comment_blogpost_pk>/<int:comment_pk>', views.CommentUpdateView.as_view(), name='comment_update'),
+
     path('inquiry', views.InquiryView.as_view(), name='inquiry'),
 ]

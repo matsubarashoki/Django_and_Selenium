@@ -95,3 +95,17 @@ class CommentDeleteView(generic.View):
 
         url = '/blog-detail/'+ str(comment_blogpost_pk)
         return redirect(to=url)
+
+class CommentUpdateView(generic.View):
+    #めっちゃ微妙だよねぇ。うーーん。１テンプレートに詰め込みすぎ。
+    # でもとりあえずやってみたい感が結構ある。。    
+    def get(self,request,comment_blogpost_pk,comment_pk):
+        model = Comment.objects.filter(pk=comment_pk)
+        update_form = CommentForm(model)
+        comtext = {"pk":comment_blogpost_pk,"update_form":update_form}
+        url = '/blog-detail/'+ str(comment_blogpost_pk)
+        #return redirect(to=url)
+        reverse_lazy('blog:blog-detail', kwargs={'pk': comment_blogpost_pk})
+    
+    def post(self,request,comment_blogpost_pk,comment_pk):
+        pass
