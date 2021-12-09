@@ -4,32 +4,25 @@
 {% load static %}
 <!--ヘッダー情報のページタイトルを設定する-->
 {% block title %}youtube-text{% endblock %}
-
+<style>
+    #id_url {
+    width: 280px;
+    height: 32px;
+}
+</style>
 {% block contents %}
-
-<script>
-    $('#indicator').click(function () {
-        var url = '{% static "css/overlay.css" %}'
-        var linkstyle = document.getElementById('overlay_link');
-        linkstyle.href = url;
-    });
-</script>
 <!-- オーバーレイは後回し -->
-
 <section class="py-5 text-center container">
     <div class="row py-lg-5">
         <div class="col-lg-6 col-md-8 mx-auto">
-            <h1 class="fw-light">Confirm</h1>
-            <p class="lead text-muted">人間は、すぐに自分の気持ちを考えすぎてしまいます。
-                「自分が傷ついたかどうか」「自分は幸福なのか、不幸なのか」「自分は、どうなのか」というように、主語が自分になりがちなのです。
-                「私は」「僕は」と、まず主語が自分になり、「自分は、どうか」ということを考える癖があるならば、少し、この主語を変えて、その主語のところに、ほかのひとを置いてみてください。
-                あなたが、「自分の不幸の原因になっている」と思う人を主語にもってきて、その人の立場から考えてみていただきたいのです。(中略)
-                人間は、自分中心に物事を考えているうちは、なかなか幸福になれません。
+            <h1 class="fw-light">youtube動画から文字起こしテキストを取得します</h1>
+            <p class="lead text-muted">
+                取得したい動画のURLを貼り付けてください。
             </p>
-            <p>
-
-                <!-- ナビゲーションボタン -->
-                {% if user.is_authenticated %}
+            <iframe id="youtube" width="560" height="315" style="display: none;" src="" frameborder="0" allowfullscreen>
+            </iframe>
+            <!-- ナビゲーションボタン -->
+            {% if user.is_authenticated %}
             <form method="POST">
                 {% csrf_token %}
                 <!-- cretateviewなのでこれformのパラメータ自動生成なのでformが必要 createviewを通ってないと表示されない-->
@@ -41,6 +34,7 @@
                                 <a href="{% url 'youtube_text:scraping' %}" class="btn btn-primary my-2">取得する</a> -->
                 <button type="submit" id="indicator">取得する</button>
             </form>
+
 
             {% if form.errors %}
             <div class="errorlist" style="color: red; font-size: 30px;">
@@ -59,4 +53,20 @@
         </div>
     </div>
 </section>
+
+<script>
+    var pre_url = ""
+    var url = "https://www.youtube.com/embed/"
+
+    $('.url_box').change(function () {
+        pre_url = $('.url_box').val().slice(32,)
+        // pre_url = pre_url
+        url = url + pre_url + "?loop=1&autoplay=1&mute=1&rel=0&modestbranding=1"
+        console.log(url)
+        $('#youtube').css('display', 'block')
+        $('#youtube').attr('src', url)
+
+    });
+
+</script>
 {% endblock %}

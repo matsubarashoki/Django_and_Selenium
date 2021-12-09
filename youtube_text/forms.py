@@ -1,5 +1,6 @@
 from django.db import models
-from django.forms import ModelForm, fields
+from django import forms
+from django.forms import ModelForm, fields, widgets
 from .models import SearchLog
 
 class SearchLogForm(ModelForm):
@@ -13,3 +14,6 @@ class SearchLogForm(ModelForm):
         '''
         model = SearchLog
         fields = ['title','url','result']
+        widgets = {
+            'url':forms.TextInput(attrs={'class':'url_box'})
+        }
