@@ -1,0 +1,68 @@
+<!-- ベーステンプレートの読み込み-->
+{% extends 'blog_base.html' %}
+<!-- static をロード-->
+{% load static %}
+<!-- ヘッダー情報のページタイトルはベーステンプレートを利用するページで設定する-->
+{% block title %}Article{% endblock %}
+
+<!-- Page Header-->
+<!-- ヘッダの設定-->
+{% block header %}
+<header class="masthead">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="post-heading">
+                    <h1>記事の追加-更新-削除</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+{% endblock %}
+<!-- Post Content-->
+{% block contents %}
+<article class="mb-4">
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="post-heading">
+                    <form method="POST">
+                    {% csrf_token %}
+                    <!--記事のタイトル -->
+                    <h1>{{form.title}}</h1>
+                    <div>
+                        <p>{{form.content}}</p>
+                        {{form.id.as_hidden}}
+                    </div>
+                    <input id="btn_type" type="hidden" name="btn_type" value="">
+                    <input id="btn_type" type="hidden" name="form_id" value="{{form_id}}">
+                    <div class="row">
+                        {% if type == "new"%}
+                        <div class="col-md-4">
+                            <button value="new">登録</button>
+                        </div>
+                        {% endif %}
+                        {% if type == "edit"%}
+                        <div class="col-md-4">
+                            <button value="update">更新</button>
+                        </div>
+                        <div class="col-md-4">
+                            <button value="delete">削除</button>
+                        </div>
+                        {% endif %}
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</article>
+
+<script>
+    $('button').click(function () {
+        var btn_type = $(this).val();
+        $('#btn_type').val(btn_type)
+    })
+</script>
+{% endblock %}

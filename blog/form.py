@@ -1,7 +1,22 @@
+from django.db.models import fields
 from django.forms import ModelForm
 from django import forms
 from django.core.mail import EmailMessage
-from .models import Comment
+from .models import BlogPost, Comment
+
+class BlogPostForm(ModelForm):
+    '''記事 Airticleのモデルフォーム'''
+    class Meta:
+        model = BlogPost
+        fields = ['title','content']
+
+    def __init__(self, *args, **kwargs):
+        super(BlogPostForm, self).__init__(*args, **kwargs)
+        self.fields['title'].widget.attrs['placeholder'] = '記事のタイトル'
+        self.fields['title'].widget.attrs['class'] = 'form-control'
+        self.fields['content'].widget.attrs['placeholder'] = '記事本文'
+        self.fields['content'].widget.attrs['class'] = 'form-control'
+
 
 class CommentForm(ModelForm):
     '''Commentモデルのフォーム'''
@@ -17,7 +32,6 @@ class CommentForm(ModelForm):
     
     def __init__(self, *args, **kwargs):
         super(CommentForm, self).__init__(*args, **kwargs)
-
         self.fields['comment'].widget.attrs['placeholder'] = 'コメントを入力してください'
         self.fields['comment'].widget.attrs['class'] = 'form-control'
 

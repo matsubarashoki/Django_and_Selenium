@@ -8,7 +8,7 @@
 <!-- Page Header-->
 <!-- ヘッダの設定-->
 {% block header %}
-<header class="masthead" style="background-image: url('assets/img/post-bg.jpg')">
+<header class="masthead">
     <div class="container position-relative px-4 px-lg-5">
         <div class="row gx-4 gx-lg-5 justify-content-center">
             <div class="col-md-10 col-lg-8 col-xl-7">
@@ -36,6 +36,12 @@
             <!--contentsを出力-->
             <div class="col-md-10 col-lg-8 col-xl-7">
                 <p>{{blog.content}}</p>
+                {% if request.user == blog.user %}
+                <form method="GET" action="{% url 'blog:article' %}">{% csrf_token %}
+                    <input type="hidden" value={{blog.pk}} name="edit_flg">
+                    <button class="btn btn-secondary my-1" type="submit">編集</button>
+                </form>
+                {% endif %}
             </div>
         </div>
     </div>

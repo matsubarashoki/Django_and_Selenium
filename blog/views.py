@@ -11,7 +11,7 @@ from django.contrib import messages
 from django.urls import reverse_lazy
 from blog import models
 from blog.models import BlogPost,Comment
-from blog.form import CommentForm, InquiryForm
+from blog.form import CommentForm, InquiryForm , BlogPostForm
 
 logger = logging.getLogger(__name__)
 
@@ -34,11 +34,11 @@ class BlogView(generic.ListView):
 
 #
 class BlogArticle(generic.View):
-    '''　
-    　詳細ページ　投稿記事の詳細 & Comment入力ページ
-    　Attributes:
-    　　template_name:レンダリングするテンプレート
-        Model:モデルクラス
+    '''
+     詳細ページ 投稿記事の詳細 & Comment入力ページ
+     Attributes:
+     template_name:レンダリングするテンプレート
+     Model:モデルクラス
     '''
     def get(self,request,pk):
         #リクエストパラメータからidを取る
@@ -109,3 +109,53 @@ class CommentUpdateView(generic.View):
     
     def post(self,request,comment_blogpost_pk,comment_pk):
         pass
+
+class ArticleView(generic.View):
+    template_name = "article.html"
+
+    def get(self,request):
+        #新規の処理
+        blog_pk = self.request.GET.get('edit_flg')
+
+        if blog_pk == "":        
+            form = BlogPostForm()
+            type = "new"
+        elif blog_pk != "":
+            blog = BlogPost.objects.get(pk=blog_pk)
+            form = BlogPostForm(instance=blog)
+            type = "edit"
+        param = {'form':form,"type":type,"form_id":blog_pk}
+        return render(request,"article.html",param)
+
+    def post(self,request):
+        btn_type = self.request.POST.get('btn_type')
+
+        if(btn_type=="new"):
+            blogpost = BlogPost()
+            registdata = BlogPostForm(request.POST,blogpost)
+            data = registdata.save(commit=False)
+            data.user = self.request.user
+            data.save()
+        
+        elif(btn_type=="update"):
+            form_id = self.request.POST.get('form_id')
+            updateblogpost = get_object_or_404(BlogPost,id=form_id)
+            # updateblogpost = BlogPost.objects.get(id=form_id)
+            updatedata = BlogPostForm(request.POST,instance=updateblogpost)
+            updatedata.is_valid()
+            updatedata.title = self.request.POST.get('title')
+            updatedata.content = self.request.POST.get('content')
+            #本当はuserは入力値じゃないから値の再代入は無駄だけど、null value in column "user_id" violates not-null constraint　エラーを外せない
+            #編集画面への遷移には作成者のフィルターをかけてるから一応大丈夫な体
+            updatedata.user = self.request.user
+            if updatedata.is_valid():
+                updatedata.save()
+
+        elif(btn_type=="delete"):
+            form_id = self.request.POST.get('form_id')
+            blogpost = BlogPost.objects.filter(pk=form_id)
+            blogpost.delete()
+
+
+        url = '/blog'
+        return redirect(to=url)

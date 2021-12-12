@@ -8,7 +8,7 @@ class BlogPost(models.Model):
 
     title = models.CharField(
         'タイトル',
-        max_length=200
+        max_length=200,
     )
     content = models.TextField(
         '本文'
@@ -17,7 +17,12 @@ class BlogPost(models.Model):
         '投稿日',
         auto_now_add=True
     )
-
+    user = models.ForeignKey(
+        CustomUser,
+        # フィールドのタイトル
+        verbose_name='ユーザー',
+        on_delete=models.DO_NOTHING,
+    )
     def __str__(self):
         return self.title
 
