@@ -19,7 +19,7 @@
                     <h2 class="subheading">{{blog.content|truncatechars:30}}</h2>
                     <span class="meta">
                         <!--投稿日時とカテゴリ　トップページへのリンク-->
-                        <a href={% url "blog:blog" %}>Django's blog</a>
+                        <a href="{% url 'blog:blog' %}">Django's blog</a>
                         {{blog.posted_at}}に投稿
                     </span>
                 </div>
@@ -39,7 +39,7 @@
                 {% if request.user == blog.user %}
                 <form method="GET" action="{% url 'blog:article' %}">{% csrf_token %}
                     <input type="hidden" value={{blog.pk}} name="edit_flg">
-                    <button class="btn btn-secondary my-1" type="submit">編集</button>
+                    <button class="btn btn-secondary my-1" type="submit">記事編集</button>
                 </form>
                 {% endif %}
             </div>
@@ -59,20 +59,22 @@
                 投稿日 {{comment.posted_at}}<br>
                 <!-- ログイン中のユーザーのものであれば削除ボタンを表示 -->
                 {% if request.user == comment.user %}
-                <form method="POST"action="{% url 'blog:comment_delete' comment.blogpost.pk comment.pk %}">{% csrf_token %}
-                    <button class="btn btn-secondary my-1" type="submit" onclick='return confirm("本当に削除しますか？");'>削除</button>
-                </form>
-                <a class="btn btn-secondary my-1" href="{% url 'blog:comment_update' comment.blogpost.pk comment.pk %}">更新</a>
+                <div class="row">
+                    <div class="col-6">
+                        <a class="btn btn-secondary my-1"
+                            href="{% url 'blog:comment_update' comment.blogpost.pk comment.pk %}">コメント更新</a>
+                    </div>
+                    <div class="col-6">
+                        <form method="POST" action="{% url 'blog:comment_delete' comment.blogpost.pk comment.pk %}">
+                            {%csrf_token %}
+                            <button class="btn btn-secondary my-1" type="submit"
+                                onclick='return confirm("本当に削除しますか？");'>コメント削除</button>
+                        </form>
+                    </div>
+                </div>
                 {% endif %}
             </div>
             {% endfor %}
-
-            {% if update_form %}
-                <form method="POST" action="url 'blog:comment_update' ">{% csrf_token %}
-                    {{ update_form.comment }}
-                    <button class="btn btn-secondary my-1" type="submit" >更新</button>
-                </form>
-            {% endif %}
         </div>
     </div>
 </article>
@@ -85,6 +87,7 @@
     <div class="row">
         <!-- 列の左右に余白offset-2を入れる -->
         <div class="col offset-2">
+            <h2>新規コメント欄</h2>
             <form method="POST">
                 {% csrf_token %}
                 {{user}}

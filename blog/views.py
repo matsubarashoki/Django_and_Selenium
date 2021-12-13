@@ -24,7 +24,6 @@ class BlogView(generic.ListView):
             context_object_name:object_listキーの別名を設定
             queryset:データベースのクエリ
     '''
-
     template_name = 'blog.html'
     # object_listキーの別名を設定
     context_object_name = 'orderby_records'
@@ -57,7 +56,7 @@ class BlogArticle(generic.View):
            raise Http404("存在しません。")
 
     def post(self,request,pk):
-        #POSTされた request　データからフォームを作成　空のModelを渡す
+        #コメント新規登録
         comment = Comment()
         registdata = CommentForm(request.POST,comment)
         data = registdata.save(commit=False)
@@ -85,30 +84,33 @@ class InquiryView(generic.FormView):
 
 class CommentDeleteView(generic.View):
     model = Comment
-
     def get(self,request):
         pass
-    
     def post(self,request,comment_blogpost_pk,comment_pk):
         comment = Comment.objects.filter(pk=comment_pk)
         comment.delete()
-
         url = '/blog-detail/'+ str(comment_blogpost_pk)
         return redirect(to=url)
 
 class CommentUpdateView(generic.View):
-    #めっちゃ微妙だよねぇ。うーーん。１テンプレートに詰め込みすぎ。
-    # でもとりあえずやってみたい感が結構ある。。    
     def get(self,request,comment_blogpost_pk,comment_pk):
-        model = Comment.objects.filter(pk=comment_pk)
-        update_form = CommentForm(model)
-        comtext = {"pk":comment_blogpost_pk,"update_form":update_form}
-        url = '/blog-detail/'+ str(comment_blogpost_pk)
-        #return redirect(to=url)
-        reverse_lazy('blog:blog-detail', kwargs={'pk': comment_blogpost_pk})
+        blog = BlogPost.objects.get(pk=comment_blogpost_pk)
+        updatemodel = Comment.objects.get(pk=comment_pk)
+        update_comment_form = CommentForm(instance=updatemodel)
+        param = {'blog':blog ,'comment':updatemodel,'update_comment_form':update_comment_form}
+        return render(request,"update_comment.html",param)
     
     def post(self,request,comment_blogpost_pk,comment_pk):
-        pass
+        updatecomment = get_object_or_404(Comment,pk=comment_pk)
+        updatedata = CommentForm(request.POST,instance=updatecomment)
+        updatedata.blogpost = BlogPost.objects.get(id=comment_blogpost_pk)
+        updatedata.comment = self.request.POST.get('comment')
+        updatedata.user = self.request.user
+        if updatedata.is_valid():
+            updatedata.save()
+
+        url = '/blog-detail/'+ str(comment_blogpost_pk)
+        return redirect(to=url)
 
 class ArticleView(generic.View):
     template_name = "article.html"
@@ -142,7 +144,6 @@ class ArticleView(generic.View):
             updateblogpost = get_object_or_404(BlogPost,id=form_id)
             # updateblogpost = BlogPost.objects.get(id=form_id)
             updatedata = BlogPostForm(request.POST,instance=updateblogpost)
-            updatedata.is_valid()
             updatedata.title = self.request.POST.get('title')
             updatedata.content = self.request.POST.get('content')
             #本当はuserは入力値じゃないから値の再代入は無駄だけど、null value in column "user_id" violates not-null constraint　エラーを外せない

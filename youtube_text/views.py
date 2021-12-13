@@ -1,5 +1,5 @@
 from django.forms import forms
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.views import generic
 from django.urls import reverse_lazy
 from django.conf import settings
@@ -52,7 +52,6 @@ class Scraping(generic.CreateView):
     success_url = reverse_lazy('youtube_text:result')    
 
     '''CreateViewクラスのform_valid()をオーバーライド
-    
         フォームのバリデーションを通過したときに呼ばれる
         フォームデータの登録をここで行う
         parameters:
@@ -95,11 +94,15 @@ class NewsListView(generic.TemplateView):
   template_name = "news_list.html"
 
   def get_context_data(self, **kwargs):
-      news = super(NewsListView, self).get_context_data(**kwargs)
-      newsapi = NewsApiClient(api_key=settings.NEWSAPI)
-      news['top_headlines'] = newsapi.get_top_headlines(language=None,country='jp')
-      #print(news['top_headlines'])
-      return news
+      try:
+        news = super(NewsListView, self).get_context_data(**kwargs)
+        newsapi = NewsApiClient(api_key=settings.NEWSAPI)
+        news['top_headlines'] = newsapi.get_top_headlines(language=None,country='jp')
+        #print(news['top_headlines'])
+        return news
+  
+      except ConnectionError:
+        return redirect(to="connection_error.html")
 
 class ResultView(generic.TemplateView):
     #スクレイピング完了ページ

@@ -4,10 +4,10 @@ PythonのDjangoを活用したWEBアプリです。
 
 # Features
 ・
-
+Django.core.exceptions によるvalidation
 
 # Requirement
-主なものだけ上げます。（詳細はrequirementをご確認ください）
+主なものだけ記載（詳細はrequirementをご確認ください）
 Python==3.7.11
 Django==2.2.5
 django-environ==0.8.1(環境変数用)
@@ -24,12 +24,17 @@ chromedriver-binary==96.0.4664.45.0
 #クローンして実行するための手順
 pip install ~~と
 
+.envの作成
+
 postgresqlでテーブル作成
 以下コマンド
+
 
 python manage.py runserver
 
 
-# Note
 
+# Note
+とても汚いコードとコメントが残っています。
+なるべく早く修正していきます。。。
 本アプリによる

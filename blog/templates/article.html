@@ -36,19 +36,19 @@
                         {{form.id.as_hidden}}
                     </div>
                     <input id="btn_type" type="hidden" name="btn_type" value="">
-                    <input id="btn_type" type="hidden" name="form_id" value="{{form_id}}">
+                    <input id="form_id" type="hidden" name="form_id" value="{{form_id}}">
                     <div class="row">
                         {% if type == "new"%}
                         <div class="col-md-4">
-                            <button value="new">登録</button>
+                            <button class="btn btn-secondary my-1" value="new">登録</button>
                         </div>
                         {% endif %}
                         {% if type == "edit"%}
                         <div class="col-md-4">
-                            <button value="update">更新</button>
+                            <button class="btn btn-secondary my-1" value="update">更新</button>
                         </div>
                         <div class="col-md-4">
-                            <button value="delete">削除</button>
+                            <button class="btn btn-secondary my-1" value="delete">削除</button>
                         </div>
                         {% endif %}
                     </div>
