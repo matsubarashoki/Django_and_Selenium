@@ -129,9 +129,9 @@ NEWSAPI = env('NEWS_API')
 
 #ログイン強制しないパス
 PUBLIC_PATHS = [
-	'/',
-    'signup',
-    'signup_success'
+    '/login',
+    '/signup',
+    '/signup_success'
 ]
 
 #BootStrap Alertsでメッセージの見た目適用
@@ -141,33 +141,3 @@ MESSAGE_TAGS = {
     messages.SUCCESS: 'alert alert-success',
     messages.INFO: 'alert alert-info',
 }
-
-# #allauthで利用するdjango.contrib.sitesを使うためのサイト識別ID設定
-# SITE_ID = 1
-
-# AUTHENTICATION＿BACKENDS = (
-#     'allauth.account.auth_backends.AuthenticationBackend', #一般ユーザ向け（メアド認証
-#     'django.contrib.auth.backends.ModelBackend', #管理ユーザ向け（ユーザ名認証
-# )
-
-# #メアド認証に変更する設定
-# ACCOUNT_AUTHENTICATION_METHOD='email'
-# ACCOUNT_USERNAME_REQUIRED = False
-
-# #サインアップにメアド確認の設定
-# ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
-# ACCOUNT_EMAIL_REQUIRED=True
-
-# #ログイン/ログアウト後の遷移先設定
-# LOGIN_REDIRECT_URL = 'blog:blog'
-# ACCOUNT_LOGOUT_REDIRECT_URL = 'user_setting:login'
-
-# #ログアウトリンク押下でログアウト
-# ACCOUNT_LOGOUT_ON_GET=True
-
-# #allauthが送信するメール件名に付与される接頭辞
-# ACCOUNT_EMAIL_SUBJECT_PREFIX=''
-
-# #デフォルトのメール送信元を設定
-# DEFAULT_FROM_EMAIL = 'admin@example.com'
-

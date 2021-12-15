@@ -4,18 +4,20 @@
 {% load static %}
 <!--ヘッダー情報のページタイトルを設定する-->
 {% block title %}youtube-text{% endblock %}
+{% block contents %}
+<!-- オーバーレイは後回し -->
 <style>
-    #id_url {
-    width: 280px;
+    .url_box {
+    width: 800px;
     height: 32px;
 }
 </style>
-{% block contents %}
-<!-- オーバーレイは後回し -->
+
 <section class="py-5 text-center container">
     <div class="row py-lg-5">
+        <h1 class="fw-light">youtube動画から文字起こしテキストを取得します</h1>
+
         <div class="col-lg-6 col-md-8 mx-auto">
-            <h1 class="fw-light">youtube動画から文字起こしテキストを取得します</h1>
             <p class="lead text-muted">
                 取得したい動画のURLを貼り付けてください。
             </p>
@@ -27,8 +29,7 @@
                 {% csrf_token %}
                 <!-- cretateviewなのでこれformのパラメータ自動生成なのでformが必要 createviewを通ってないと表示されない-->
                 {{ form.title.as_hidden }}
-                <label>URLを入力してください。</label>
-                <h3>{{ form.url }}</h3>
+                <h3 class="row justify-content-center">{{ form.url }}</h3>
                 {{ form.result.as_hidden }}
                 <!--最初aタグで作っていたけど、formにはbuttonよな 
                                 <a href="{% url 'youtube_text:scraping' %}" class="btn btn-primary my-2">取得する</a> -->
