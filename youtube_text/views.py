@@ -3,7 +3,6 @@ from django.shortcuts import redirect, render
 from django.views import generic
 from django.urls import reverse_lazy
 from django.conf import settings
-from django.http import Http
 from django.contrib import messages
 from newsapi import NewsApiClient
 from .forms import SearchLogForm
