@@ -3,6 +3,7 @@ from django.shortcuts import redirect, render
 from django.views import generic
 from django.urls import reverse_lazy
 from django.conf import settings
+from django.http import Http
 from django.contrib import messages
 from newsapi import NewsApiClient
 from .forms import SearchLogForm
@@ -94,15 +95,11 @@ class NewsListView(generic.TemplateView):
   template_name = "news_list.html"
 
   def get_context_data(self, **kwargs):
-      try:
         news = super(NewsListView, self).get_context_data(**kwargs)
         newsapi = NewsApiClient(api_key=settings.NEWSAPI)
         news['top_headlines'] = newsapi.get_top_headlines(language=None,country='jp')
         #print(news['top_headlines'])
         return news
-  
-      except ConnectionError:
-        return redirect(to="connection_error.html")
 
 class ResultView(generic.TemplateView):
     #スクレイピング完了ページ
