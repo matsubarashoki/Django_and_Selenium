@@ -30,7 +30,7 @@ PythonのDjangoを活用したWEBアプリです。
 
 # Usage
 #クローンして実行するための手順
-pip install ~~と
+pip install -r requirement.txt
 
 .envの作成
 

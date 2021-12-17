@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>一覧画面</title>
+    <link rel="stylesheet" href="https://unpkg.com/sanitize.css" />
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <p>
+        店名選択：<select id="shopList">
+      <option value=""></option>
+      <option value="日本橋本店">日本橋本店</option>
+      <option value="新宿店">新宿店</option>
+      <option value="長野店">長野店</option>
+    </select>
+    </p>
+
+    <div id="shopArea"></div>
+</body>
+
+<script>
+    let shopName; //選択した店名
+    let shopList = document.getElementById("shopList");
+    shopList.addEventListener("change", function(event) {
+        //イベントが発生すると、eventオブジェクトが関数に渡される
+        shopName = event.target.value;
+        let shopForm = document.getElementById("shopForm");
+        if (shopName != "" && shopForm) {
+            shopForm.remove();
+            getJson(shopName);
+        } else if (shopName == "" && shopForm) {
+            shopForm.remove();
+        } else if (shopName != "" && !shopForm) {
+            getJson(shopName);
+        }
+    });
+</script>
+
+<script>
+    function getJson(shopName) {
+        const url = "shop.json"; //JSONデータ
+        let shopInfo; //店情報
+        let shopArea = document.getElementById("shopArea");
+        let shopTableHtml = `
+      <form action="List.html" id="shopForm">
+            <table id="shopTable">
+        <tr>
+          <th>商品ID</th>
+          <th>商品名</th>
+          <th>値段(円)</th>
+          <th>注文数</th>
+          <th>金額(円)</th>
+        </tr>
+      `;
+        fetch(url)
+            .then((response) => response.json())
+            .then((data) => {
+                shopInfo = data[shopName]; //店名から店情報を取得
+                shopInfo.forEach((row, index) => {
+                    shopTableHtml += `
+                    <tr>
+                    <td>${row["id"]}</td>
+                    <td>${row["name"]}</td>
+                    <td>${row["price"]}</td>
+                    <td class="order"></td>
+                    <td><div class="red" id="kingaku${index}"></div></td>
+                    </tr>
+                    `;
+                });
+                shopTableHtml += `</table>
+                    <div class="red" id="goukei"></div>
+                    <button type="submit">送信する</button>
+                    </form>
+                    `;
+                //fetch関数の中でやらないと、読み込みが遅くてtableが再作成できない
+                shopArea.innerHTML = shopTableHtml; //テーブルの再作成
+                //orderListをよんで数量も設定する
+                orderList();
+            });
+    }
+</script>
+
+<script>
+    function orderList() {
+        let select = [];
+        let order = document.getElementsByClassName("order");
+        for (let i = 0; i < order.length; i++) {
+            let selectHtml = "<select id=select" + i + ">";
+            for (let j = 0; j < 10; j++) {
+                selectHtml = selectHtml + "<option>" + j + "</option>";
+            }
+            order[i].innerHTML = selectHtml + "</select>";
+            select[i] = document.getElementById("select" + i);
+            select[i].addEventListener("change", calc);
+        }
+    }
+
+    function calc() {
+        let goukei = 0; //合計金額(円)
+        let elements; //form内の要素
+        let orderNumber; //要素の値(注文数)
+        let kingakuElement; //金額を表示する要素
+        let price; //一覧表の値段(円)
+        let order = document.getElementsByClassName("order");
+        let shopTable = document.getElementById("shopTable");
+        let goukeiElement = document.getElementById("goukei");
+        for (let i = 0; i < order.length; i++) {
+            elements = document.forms[0].elements[i];
+            orderNumber = elements.value;
+            price = shopTable.rows[i + 1].cells[2].innerText;
+            if (orderNumber > 0) {
+                kingakuElement = document.getElementById("kingaku" + i);
+                kingakuElement.innerHTML = orderNumber * price;
+                goukei += orderNumber * price;
+                goukeiElement.innerHTML = "合計支払い金額：" + goukei + "円";
+            }
+        }
+    }
+</script>
+
+</html>
