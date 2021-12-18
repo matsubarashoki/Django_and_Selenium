@@ -1,6 +1,7 @@
 # Django_and_Selenium
 ポートフォリオ用サイト
 PythonのDjangoを活用したWEBアプリです。
+デモサイト：http://matsukari.pythonanywhere.com/
 
 # 主な機能
 ・管理者によるブログ記事作成機能
@@ -37,7 +38,7 @@ pip install -r requirement.txt
 postgresqlでテーブル作成
 以下コマンド
 
->python manage.py createsuperuser
+python manage.py createsuperuser
 ユーザー名: admin
 メールアドレス:
 
