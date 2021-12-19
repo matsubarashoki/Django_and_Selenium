@@ -41,8 +41,6 @@ class BlogArticle(generic.View):
     '''
     def get(self,request,pk):
         #リクエストパラメータからidを取る
-        #取ったidでquery生成＆取得
-        #コメントformのform生成
         pk = self.kwargs.get('pk')
         if not "pk" == "":
             blog = BlogPost.objects.get(pk=pk)
@@ -160,3 +158,6 @@ class ArticleView(generic.View):
 
         url = '/blog'
         return redirect(to=url)
+
+class TableView(generic.TemplateView):
+    template_name = "table.html"

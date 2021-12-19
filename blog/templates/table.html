@@ -1,26 +1,54 @@
-<!DOCTYPE html>
-<html lang="ja">
+<!-- ベーステンプレートの読み込み-->
+{% extends 'blog_base.html' %}
+<!-- static をロード-->
+{% load static %}
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>一覧画面</title>
-    <link rel="stylesheet" href="https://unpkg.com/sanitize.css" />
-    <link rel="stylesheet" href="style.css" />
-</head>
+<!-- ヘッダの設定-->
+{% block header %}
+<header class="masthead" style="height: 3rem;">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="post-heading">
+                    <!--投稿記事のタイトル <h1>タブの要素を書き換える。レコードをblogで参照し、titleフィールドの値を出力-->
+                    <h1>テーブルページ</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+{% endblock %}
 
-<body>
-    <p>
-        店名選択：<select id="shopList">
-      <option value=""></option>
-      <option value="日本橋本店">日本橋本店</option>
-      <option value="新宿店">新宿店</option>
-      <option value="長野店">長野店</option>
-    </select>
-    </p>
+<!-- ここからコンテンツ -->
+{% block contents %}
+<p>
+    店名選択：<select id="shopList">
+            <option value=""></option>
+            <option value="日本橋本店">日本橋本店</option>
+            <option value="新宿店">新宿店</option>
+            <option value="長野店">長野店</option>
+        </select>
+</p>
 
-    <div id="shopArea"></div>
-</body>
+<div class="container">
+    <form action="List.html" id="shopForm">
+        <div id="shopArea">
+            <table class="table table-striped table-bordered table-hover" id="shopTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>名前</th>
+                        <th>価格</th>
+                        <th>数量</th>
+                        <th>金額</th>
+                    </tr>
+                </thead>
+                <tbody id="datalist"></tbody>
+            </table>
+        </div>
+        <div id="goukei"></div>
+    </form>
+</div>
 
 <script>
     let shopName; //選択した店名
@@ -30,7 +58,6 @@
         shopName = event.target.value;
         let shopForm = document.getElementById("shopForm");
         if (shopName != "" && shopForm) {
-            shopForm.remove();
             getJson(shopName);
         } else if (shopName == "" && shopForm) {
             shopForm.remove();
@@ -38,56 +65,39 @@
             getJson(shopName);
         }
     });
-</script>
 
-<script>
     function getJson(shopName) {
-        const url = "shop.json"; //JSONデータ
+        const url = "{% static 'json/shop.json' %}"; //JSONデータ
         let shopInfo; //店情報
         let shopArea = document.getElementById("shopArea");
-        let shopTableHtml = `
-      <form action="List.html" id="shopForm">
-            <table id="shopTable">
-        <tr>
-          <th>商品ID</th>
-          <th>商品名</th>
-          <th>値段(円)</th>
-          <th>注文数</th>
-          <th>金額(円)</th>
-        </tr>
-      `;
+
         fetch(url)
             .then((response) => response.json())
             .then((data) => {
                 shopInfo = data[shopName]; //店名から店情報を取得
                 shopInfo.forEach((row, index) => {
-                    shopTableHtml += `
-                    <tr>
-                    <td>${row["id"]}</td>
-                    <td>${row["name"]}</td>
-                    <td>${row["price"]}</td>
-                    <td class="order"></td>
-                    <td><div class="red" id="kingaku${index}"></div></td>
-                    </tr>
-                    `;
+                    var id = row["id"]
+                    var name = row["name"]
+                    var price = row["price"]
+                    var tr = $('<tr />');
+                    var td_id = $('<td />').text(id);
+                    var td_name = $('<td />').text(name);
+                    var td_price = $('<td />').text(price);
+                    var td_order = $('<td class="order" />')
+                    var kingaku = "kingaku" + String(index)
+                    var td_kingaku = $('<td id="' + kingaku + '" />').text("");
+                    tr.append(td_id, td_name, td_price, td_order, td_kingaku);
+                    $('#datalist').append(tr)
                 });
-                shopTableHtml += `</table>
-                    <div class="red" id="goukei"></div>
-                    <button type="submit">送信する</button>
-                    </form>
-                    `;
-                //fetch関数の中でやらないと、読み込みが遅くてtableが再作成できない
-                shopArea.innerHTML = shopTableHtml; //テーブルの再作成
                 //orderListをよんで数量も設定する
                 orderList();
             });
     }
-</script>
 
-<script>
     function orderList() {
         let select = [];
         let order = document.getElementsByClassName("order");
+        console.log(order)
         for (let i = 0; i < order.length; i++) {
             let selectHtml = "<select id=select" + i + ">";
             for (let j = 0; j < 10; j++) {
@@ -113,7 +123,8 @@
             orderNumber = elements.value;
             price = shopTable.rows[i + 1].cells[2].innerText;
             if (orderNumber > 0) {
-                kingakuElement = document.getElementById("kingaku" + i);
+                var kingaku_id = "kingaku" + i
+                kingakuElement = document.getElementById(kingaku_id);
                 kingakuElement.innerHTML = orderNumber * price;
                 goukei += orderNumber * price;
                 goukeiElement.innerHTML = "合計支払い金額：" + goukei + "円";
@@ -122,4 +133,4 @@
     }
 </script>
 
-</html>
+{% endblock %}

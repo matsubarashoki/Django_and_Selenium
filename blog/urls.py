@@ -1,4 +1,6 @@
 from django.urls import path
+from django.views.generic import RedirectView
+
 from . import views
 
 app_name = 'blog'
@@ -18,4 +20,5 @@ urlpatterns = [
 
     path('article', views.ArticleView.as_view(), name='article'),
 
+    path('table', views.TableView.as_view(), name='table'),
 ]
