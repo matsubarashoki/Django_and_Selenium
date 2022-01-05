@@ -12,4 +12,8 @@ urlpatterns = [
     path('',include('blog.urls')),
     #allauthのURL
     # path('accounts/',include('allauth.urls')),
+
+    #PDF作成
+    path('makepdf/',include('makepdf.urls')),
+
 ]

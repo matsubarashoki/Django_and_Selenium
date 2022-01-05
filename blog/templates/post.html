@@ -41,7 +41,8 @@
                     <input type="hidden" value={{blog.pk}} name="edit_flg">
                     <button class="btn btn-secondary my-1" type="submit">記事編集</button>
                 </form>
-                {% endif %}
+                <br>
+                <a href="{% url 'makepdf:pdfIndex' %}">PDF</a> {% endif %}
             </div>
         </div>
     </div>
@@ -54,21 +55,17 @@
             {% for comment in comments %}
             <!--contentsを出力-->
             <div class="col-md-10 col-lg-8 col-xl-7" id="comment_box" style="border: 0.5px solid grey;">
-                コメントユーザ {{comment.user}}<br>
-                コメント {{comment.comment}}<br>
-                投稿日 {{comment.posted_at}}<br>
+                コメントユーザ {{comment.user}}<br> コメント {{comment.comment}}<br> 投稿日 {{comment.posted_at}}<br>
                 <!-- ログイン中のユーザーのものであれば削除ボタンを表示 -->
                 {% if request.user == comment.user %}
                 <div class="row">
                     <div class="col-6">
-                        <a class="btn btn-secondary my-1"
-                            href="{% url 'blog:comment_update' comment.blogpost.pk comment.pk %}">コメント更新</a>
+                        <a class="btn btn-secondary my-1" href="{% url 'blog:comment_update' comment.blogpost.pk comment.pk %}">コメント更新</a>
                     </div>
                     <div class="col-6">
                         <form method="POST" action="{% url 'blog:comment_delete' comment.blogpost.pk comment.pk %}">
                             {%csrf_token %}
-                            <button class="btn btn-secondary my-1" type="submit"
-                                onclick='return confirm("本当に削除しますか？");'>コメント削除</button>
+                            <button class="btn btn-secondary my-1" type="submit" onclick='return confirm("本当に削除しますか？");'>コメント削除</button>
                         </form>
                     </div>
                 </div>
@@ -89,9 +86,7 @@
         <div class="col offset-2">
             <h2>新規コメント欄</h2>
             <form method="POST">
-                {% csrf_token %}
-                {{user}}
-                {{ form.comment }}
+                {% csrf_token %} {{user}} {{ form.comment }}
                 <hr>
                 <button type="submit">コメントする</button>
             </form>

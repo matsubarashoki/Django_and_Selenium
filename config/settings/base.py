@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     # 'django.contrib.sites',
     # 'allauth',
     # 'allauth.account'
+    'makepdf.apps.MakepdfConfig',
 ]
 
 MIDDLEWARE = [
