@@ -16,4 +16,8 @@ urlpatterns = [
     #PDF作成
     path('makepdf/',include('makepdf.urls')),
 
+    #Ajax_test
+    path('ajax/',include('Ajax_test.urls')),
+
+
 ]

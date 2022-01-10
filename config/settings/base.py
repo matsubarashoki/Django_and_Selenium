@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     # 'allauth',
     # 'allauth.account'
     'makepdf.apps.MakepdfConfig',
+    'Ajax_test.apps.AjaxTestConfig',
 ]
 
 MIDDLEWARE = [
