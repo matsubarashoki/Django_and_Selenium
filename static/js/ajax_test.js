@@ -5,6 +5,8 @@ $(document).ready(function() {
         dataType: "json",
     }).done(function(data) {
 
+        console.log(data)
+        console.log(data["main"])
         data.forEach((element) => {
             var tr = $('<tr />');
             var td;

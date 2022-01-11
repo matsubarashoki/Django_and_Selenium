@@ -1,32 +1,11 @@
 SELECT
     aw.id
-    ,matter.tantou_sales --担当営業
     ,matter.status --ステータス
-    ,matter.client_number --取引先番号
     ,matter.company_name --社名
     ,matter.matter_name --案件名
-    ,aw.emp_num --社員No
     ,aw.emp_name --社員名
-    ,aw.actual_time_unit --稼働時間単位
-    ,aw.actual_time --稼働時間
-    ,aw.over_time --控除or超過時間
-    ,matter.base_time --基本時間
-    ,aw.payment --単価
-    ,aw.deducting --控除
-    ,aw.excess --超過額
-    ,aw.over_amount --控除or超過金額
-    ,aw.special_item1 --特殊品目
-    ,aw.special_item1_amount --特殊品目金額
-    ,aw.special_item2 --特殊品目2
-    ,aw.special_item2_amount --特殊品目2金額
     ,aw.total_amount --請求金額
     ,aw.billing_date --請求日
-    ,matter.payment_date_settting --支払期日設定
-    ,matter."Transfer_date" --指定振替日設定
-    ,aw.deadline --支払い期日
-    ,matter.closing_date --締め日設定
-    ,aw.work_duration --稼働対象期間
-    ,aw.contract_duration --契約期間
 FROM youtube_text."Ajax_test_actualwork" as aw
 JOIN youtube_text."Ajax_test_matter" as matter
 ON aw.matter_id_id = matter.id

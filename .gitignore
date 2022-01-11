@@ -158,6 +158,8 @@ DB設定.txt
 メモ.txt
 backup/
 blog/migrations/0001_initial.py
-blog/migrations/0002_comment_user.py
+blog/migrations/
 user_setting/migrations/0001_initial.py
 youtube_text/migrations/0001_initial.py
+Ajax_test/migrations
+static/vendor/bootstrap
