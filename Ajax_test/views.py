@@ -22,14 +22,13 @@ class ListJsonAPIView(APIView):
         #ワンライナーでおしゃれに書きたいけどわからん。。。
         #これdatalist2をはちゃめちゃ回すよな。。絶対よくない。。
         newlist = {}
-        for x in datalist1:
-            newlist['main']= x
-
-            for y in datalist2 :
+        for index, x in enumerate(datalist1):
+            key = "main" + str(index)
+            newlist[key]= x
+            for index2, y in enumerate(datalist2) :                
                 #IDが一致するか リストの検索処理をしたいけどindex指定ができぬ
                 if x[0] == y[0]:
-                    newlist['detail'] = y
-        print(newlist)
-        
+                    key = "detail" + str(index2)
+                    newlist[key] = y
 
         return JsonResponse(newlist, safe=False)

@@ -1,5 +1,6 @@
 SELECT
-    aw.id
+    matter.id
+    ,aw.id
     ,matter.status --ステータス
     ,matter.company_name --社名
     ,matter.matter_name --案件名
