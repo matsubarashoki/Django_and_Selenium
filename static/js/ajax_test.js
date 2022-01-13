@@ -5,7 +5,6 @@ $(document).ready(function() {
         dataType: "json",
     }).done(function(data) {
 
-        console.log(data)
         var tr;
         var td;
         $.each(data, function(index, value) {
@@ -13,10 +12,8 @@ $(document).ready(function() {
                 var tr = $('<tr />');
                 var td;
                 $.each(value, function(index, m_value) {
-
                     if (index == 0) {
-                        //
-
+                        //MatterIdは作らない
                     } else if (index == 2) {
                         td = $('<td class="status" />').text(m_value);
                     } else {
@@ -28,38 +25,18 @@ $(document).ready(function() {
 
             } else {
                 var tr_m = $('<tr class="modal_row"/>');
-                var d = $('<div class="modal_item"  />').text(value)
-                tr_m.append(d)
-                $('#datalist').append(tr_m)
+                var d;
+                $.each(value, function(index, d_value) {
+                    d = $('<div class="modal_item"  />').text(d_value)
+                    tr_m.append(d);
+                });
+                $('#datalist').append(tr_m);
             }
         })
 
         SetStatus();
-        $('.modal_row').css("display", "none");
-
+        //$('.modal_row').css("display", "none");
         $('#MatterId').css("display", "none");
-
-
-        // $.each(data["main"], function(index, value) {
-        //     if (index == 1) {
-        //         td = $('<td class="status" />').text(value);
-        //     } else {
-        //         td = $('<td />').text(value);
-        //     }
-        //     tr.append(td);
-        // })
-        // $('#datalist').append(tr)
-
-        // SetStatus()
-
-        // var tr_m = $('<tr id="modal_row"/>');
-        // $.each(data["detail"], function(index, value) {
-        //     var d = $('<div class="modal_item" tabtabindex="-1" />').text(value)
-        //     tr_m.append(d)
-        // })
-        // $('#datalist').append(tr_m)
-        // $('#modal_row').css("display", "none");
-
 
     }).fail(function(data) {});
 
@@ -76,6 +53,7 @@ function SetStatus() {
     }
 }
 
-function displey_none() {
+function ShowModal() {
+    let status = document.getElementsByClassName("status");
 
 }
