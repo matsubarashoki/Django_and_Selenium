@@ -4,11 +4,11 @@ $(document).ready(function() {
         type: "GET",
         dataType: "json",
     }).done(function(data) {
-        let tr;
-        let td;
         $.each(data, function(index, value) {
             if (index.indexOf('main') !== -1) {
                 let tr = $('<tr class="main"/>');
+                let checkbox = $('<td><input type="checkbox" /></td>')
+                tr.append(checkbox)
                 let td;
                 $.each(value, function(key, m_value) {
                     switch (key) {

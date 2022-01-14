@@ -19,8 +19,6 @@ class ListJsonAPIView(APIView):
             cursor.execute(sql2)
             datalist2 = cursor.fetchall()
         
-        #ワンライナーでおしゃれに書きたいけどわからん。。。
-        #これdatalist2をはちゃめちゃ回すよな。。絶対よくない。。
         m_keys=[
             "案件ID",
             "稼働ID",
@@ -55,7 +53,8 @@ class ListJsonAPIView(APIView):
             "稼働対象期間",
             "契約期間"
             ]
-
+        #ワンライナーでおしゃれに書きたいけどわからん。。。
+        #これdatalist2をはちゃめちゃ回すよな。。絶対よくない。。
         newlist = {}
         for index, x in enumerate(datalist1):
             key = "main" + str(index)
