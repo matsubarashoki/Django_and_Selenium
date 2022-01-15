@@ -1,10 +1,11 @@
 from django.http.response import JsonResponse
 from django.views import generic
-from django.db import connection
+from django.db import connection, models
 from rest_framework import generics
 from rest_framework.views import APIView
 from .models import Matter, ActualWork
 from .serializers import ActualWorkSerializer
+from .forms import ActualWorkForm
 
 class ListJsonAPIView(APIView):
 
@@ -70,3 +71,8 @@ class ListJsonAPIView(APIView):
 
 
         return JsonResponse(newlist, safe=False)
+
+class ActualWorkFormView(generic.FormView):
+    template_name = 'list.html'
+    form_class = ActualWorkForm
+

@@ -32,10 +32,10 @@ LOGGING = {
             'propagate': False,
         },
         # 実行SQL
-        'django.db.backends': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
+        # 'django.db.backends': {
+        #     'handlers': ['console'],
+        #     'level': 'DEBUG',
+        #     'propagate': False,
+        # },
     }
 }
