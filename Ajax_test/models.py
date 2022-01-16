@@ -285,3 +285,23 @@ class ActualWork(models.Model):
 
     class Meta:
         verbose_name = '稼働'
+
+
+class TodoItem(models.Model):
+    item = models.CharField(
+        verbose_name='Todo',
+        max_length=50)
+
+    item_date = models.DateField(
+        verbose_name='登録日',
+        auto_now_add=True)
+
+    user = models.ForeignKey(
+        CustomUser,
+        # フィールドのタイトル
+        verbose_name='登録ユーザ',
+        # ユーザーを削除する場合はそのユーザーの投稿データもすべて削除する
+        on_delete=models.DO_NOTHING
+    )
+    def __str__(self):
+        return self.item

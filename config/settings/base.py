@@ -30,7 +30,10 @@ INSTALLED_APPS = [
     # 'allauth.account'
     'makepdf.apps.MakepdfConfig',
     'Ajax_test.apps.AjaxTestConfig',
-]
+    #modal用
+    'bootstrap_modal_forms',
+    'widget_tweaks'
+    ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

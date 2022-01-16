@@ -1,11 +1,18 @@
+import imp
+from pyexpat.errors import messages
+from django import template
+from django.forms import BaseModelForm
 from django.http.response import JsonResponse
-from django.views import generic
+from django.shortcuts import redirect, render
+#from django.views import generic
 from django.db import connection, models
+from django.urls import reverse_lazy
 from rest_framework import generics
 from rest_framework.views import APIView
-from .models import Matter, ActualWork
+from .models import Matter, ActualWork, TodoItem
 from .serializers import ActualWorkSerializer
-from .forms import ActualWorkForm
+from .forms import ActualWorkForm, CreateUpdateTodoItemForm
+from bootstrap_modal_forms import generic 
 
 class ListJsonAPIView(APIView):
 
@@ -72,7 +79,35 @@ class ListJsonAPIView(APIView):
 
         return JsonResponse(newlist, safe=False)
 
-class ActualWorkFormView(generic.FormView):
-    template_name = 'list.html'
-    form_class = ActualWorkForm
+# class ActualWorkFormView(generic.FormView):
+#     template_name = 'list.html'
+#     form_class = ActualWorkForm
 
+
+#Modal処理サンプル
+def show_todo_items(request):
+    all_items = TodoItem.objects.filter(user=request.user)
+    return render(request, 'show_todo_items.html',{'all_items': all_items})
+
+class CreateTodoItemFormView(generic.BSModalCreateView):
+    template_name = 'create_modal_form.html'
+    form_class = CreateUpdateTodoItemForm
+    success_message = '成功しました'
+    success_url = reverse_lazy('Ajax_test:show_todo_items')
+
+    def form_valid(self, form):
+        form.instance.user_id = self.request.user.id
+        return super().form_valid(form)
+
+class UpdateTodoItemFormView(generic.BSModalUpdateView):
+    model = TodoItem
+    template_name = 'update_modal_form.html'
+    form_class = CreateUpdateTodoItemForm
+    success_message = '更新しました'
+    success_url = reverse_lazy('Ajax_test:show_todo_items')
+
+def delete_todo_item(request, todo_id):
+    item = TodoItem.objects.get(pk=todo_id)
+    item.delete()
+    messages.success = (request, ('削除しました'))
+    return redirect('Ajax_test:show_todo_items')

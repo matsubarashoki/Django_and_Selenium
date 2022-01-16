@@ -1,0 +1,61 @@
+{% extends 'modal_base.html' %} {% load static %} ~ {% block content %}
+<!-- Todo追加フォーム -->
+<form class="form-inline my-2 my-lg-0" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <button type="button" class="create_item bg-light rounded" data-id="{% url 'Ajax_test:create_todo_item' %}"><span class="fa fa-pencil">Itemの登録</span></button>
+</form><br>
+
+<!-- modal  -->
+<div class="modal fade" tabindex="-1" role="dialog" id="modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content"></div>
+    </div>
+</div>
+
+<!-- TodoListテーブルの表示 -->
+{% if all_items %}
+<table class="table table-bordered tablesorter-bootstrap" id="recipe-table">
+    <thead>
+        <tr class="table-primary">
+            <th style="text-align: center;">Item</th>
+            <th style="text-align: center;">Date</th>
+            <th style="text-align: center;">Edit</th>
+            <th style="text-align: center;">Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for i in all_items %}
+        <tr class="table-info">
+            <td style="text-align: center;">{{ i.item }}</td>
+            <td style="text-align: center;">{{ i.item_date|date:"n/j D" }}</td>
+            <td style="text-align: center;">
+                <button type="button" class="update_item bg-light rounded" data-id="{% url 'Ajax_test:update_todo_item' i.pk %}"><span class="fa fa-pencil">Edit</span></button>
+            </td>
+            <td style="text-align: center;">
+                <button type="button" class="bg-light rounded"><a href="{% url 'Ajax_test:delete_todo_item' i.id %}"><span class="fa fa-pencil">×</span></a></button>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+
+<script type="text/javascript">
+    {#Create Item Modal Form#}
+    $(function() {
+        $(".create_item").each(function() {
+            $(this).modalForm({
+                formURL: $(this).data('id')
+            });
+        });
+    }); 
+    {#Update Item Modal Form#}
+    $(function() {
+        $(".update_item").each(function() {
+            $(this).modalForm({
+                formURL: $(this).data('id')
+            });
+        });
+    });
+</script>
+{% endblock content %}
