@@ -17,4 +17,6 @@ urlpatterns =[
     path('update_todo_item/<int:pk>', views.UpdateTodoItemFormView.as_view(), name='update_todo_item'),
     path('delete_todo_item/<todo_id>', views.delete_todo_item, name='delete_todo_item'),
 
+    path('create_aw/', views.CreateActualWorkFormView.as_view(), name='create_aw'),
+    
 ]

@@ -118,8 +118,8 @@ class CreateActualWorkFormView(generic.BSModalCreateView):
     template_name = 'create_modal_form.html'
     form_class = ActualWorkForm
     success_message = '成功しました'
-    success_url = reverse_lazy('Ajax_test:show_todo_items')
+    success_url = reverse_lazy('Ajax_test:list')
 
     def form_valid(self, form):
-        form.instance.user_id = self.request.user.id
+        # form.instance.user_id = self.request.user.id
         return super().form_valid(form)
