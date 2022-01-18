@@ -4,8 +4,8 @@ $(document).ready(function() {
         type: "GET",
         dataType: "json",
     }).done(function(data) {
+        let aw_id;
         $.each(data, function(index, value) {
-            let aw_id;
             if (index.indexOf('main') !== -1) {
                 let tr = $('<tr class="main"/>');
                 let checkbox = $('<td><input id="ch_box" type="checkbox" /></td>')
@@ -30,7 +30,6 @@ $(document).ready(function() {
                     tr.append(td);
                 })
                 $('#datalist').append(tr)
-
             } else {
                 let tr_m = $('<tr class="modal_row" nowrap/>');
                 let td = $('<td colspan="8" />');
@@ -40,10 +39,10 @@ $(document).ready(function() {
                     d = $('<div class="modal_item" />').text(key + " : " + d_value)
                     td.append(d);
                 });
-                //let d_button = '<button class="btn btn-outline-dark mr-3 popup">編集</button>'
+
                 let d_button =
-                    '<span class="btn-container" data-id="{% url ' + "Ajax_test:update_aw pk=" + aw_id + '%}">' +
-                    '<button class="btn btn-outline-dark mr-3 update">編集</button>' +
+                    '<span class="btn-container" data-id="">' +
+                    '<button  class="update btn btn-outline-dark mr-3" data-id="update_aw/' + aw_id + '">編集</button>' +
                     '<div class="btn-group">' +
                     '<button value="-1" class="btn btn-outline-dark operation">戻す</button>' +
                     '<button value="1" class="btn btn-outline-dark operation">' + "ふむ" + '</button>' +
@@ -142,6 +141,16 @@ $(document).ready(function() {
         }).done(function(data) {
             $('#modal').modal("show");
         })
+    });
+
+    $(document).on("click", "button.update", function() {
+        // let ids = $(this).parents("tr.modal_row").attr("id")
+        // let aw_id = ids.slice(-1)
+        // $(this).attr("data-id", "update_aw/" + aw_id);
+
+        $(this).modalForm({
+            formURL: $(this).data('id')
+        });
     });
 
 
