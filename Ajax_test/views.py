@@ -123,3 +123,16 @@ class CreateActualWorkFormView(generic.BSModalCreateView):
     def form_valid(self, form):
         # form.instance.user_id = self.request.user.id
         return super().form_valid(form)
+
+class UpdateActualWorkFormView(generic.BSModalUpdateView):
+    model = ActualWork
+    template_name = 'update_modal_form.html'
+    form_class = ActualWorkForm
+    success_message = '更新しました'
+    success_url = reverse_lazy('Ajax_test:list')
+
+def deleteActualWork(request, todo_id):
+    item = ActualWork.objects.get(pk=todo_id)
+    item.delete()
+    messages.success = (request, ('削除しました'))
+    return redirect('Ajax_test:list')

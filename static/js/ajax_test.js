@@ -5,6 +5,7 @@ $(document).ready(function() {
         dataType: "json",
     }).done(function(data) {
         $.each(data, function(index, value) {
+            let aw_id;
             if (index.indexOf('main') !== -1) {
                 let tr = $('<tr class="main"/>');
                 let checkbox = $('<td><input id="ch_box" type="checkbox" /></td>')
@@ -17,6 +18,7 @@ $(document).ready(function() {
                             break;
                         case "稼働ID":
                             td = $('<td class="aw_id" />').text(m_value);
+                            aw_id = m_value;
                             break;
                         case "ステータス":
                             td = $('<td class="status" />').text(m_value);
@@ -38,13 +40,21 @@ $(document).ready(function() {
                     d = $('<div class="modal_item" />').text(key + " : " + d_value)
                     td.append(d);
                 });
-                let d_button = '<button class="btn btn-outline-dark mr-3 popup">編集</button>'
+                //let d_button = '<button class="btn btn-outline-dark mr-3 popup">編集</button>'
+                let d_button =
+                    '<span class="btn-container" data-id="{% url ' + "Ajax_test:update_aw pk=" + aw_id + '%}">' +
+                    '<button class="btn btn-outline-dark mr-3 update">編集</button>' +
+                    '<div class="btn-group">' +
+                    '<button value="-1" class="btn btn-outline-dark operation">戻す</button>' +
+                    '<button value="1" class="btn btn-outline-dark operation">' + "ふむ" + '</button>' +
+                    '</div></span>';
                 td.append(d_button)
-
                 tr_m.append(td)
+
                 $('#datalist').append(tr_m);
             }
         });
+
         $('#MatterId').css("display", "none");
         $('.matter_id').css("display", "none");
         $('.modal_row').hide()
