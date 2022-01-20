@@ -42,10 +42,9 @@ $(document).ready(function() {
 
                 let d_button =
                     '<span class="btn-container" data-id="">' +
-                    '<button  class="update btn btn-outline-dark mr-3" data-id="update_aw/' + aw_id + '">編集</button>' +
                     '<div class="btn-group">' +
-                    '<button value="-1" class="btn btn-outline-dark operation">戻す</button>' +
-                    '<button value="1" class="btn btn-outline-dark operation">' + "ふむ" + '</button>' +
+                    '<button  class="update btn btn-outline-dark mr-3" data-id="update_aw/' + aw_id + '">編集</button>' +
+                    '<button value="1" class="delete btn btn-outline-dark operation" data-id="delete_aw/' + aw_id + '">削除</button>' +
                     '</div></span>';
                 td.append(d_button)
                 tr_m.append(td)
@@ -144,13 +143,21 @@ $(document).ready(function() {
     });
 
     $(document).on("click", "button.update", function() {
-        // let ids = $(this).parents("tr.modal_row").attr("id")
-        // let aw_id = ids.slice(-1)
-        // $(this).attr("data-id", "update_aw/" + aw_id);
-
         $(this).modalForm({
             formURL: $(this).data('id')
         });
+    });
+
+    $(document).on("click", "button.delete", function() {
+        var result = window.confirm("本当に削除しますか？（削除したデータは戻せません。）")
+        if (result) {
+            $.ajax({
+                url: $(this).data('id'),
+                type: "GET",
+            }).done(function(data) {
+                window.location.reload();
+            })
+        }
     });
 
 

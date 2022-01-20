@@ -2,7 +2,7 @@ import imp
 from pyexpat.errors import messages
 from django import template
 from django.forms import BaseModelForm
-from django.http.response import JsonResponse
+from django.http.response import JsonResponse,HttpResponse
 from django.shortcuts import redirect, render
 #from django.views import generic
 from django.db import connection, models
@@ -121,7 +121,8 @@ class CreateActualWorkFormView(generic.BSModalCreateView):
     success_url = reverse_lazy('Ajax_test:list')
 
     def form_valid(self, form):
-        # form.instance.user_id = self.request.user.id
+        #Userを直接当てられへん
+        form.instance.aw_create_user_id = self.request.user.id
         return super().form_valid(form)
 
 class UpdateActualWorkFormView(generic.BSModalUpdateView):
@@ -131,8 +132,7 @@ class UpdateActualWorkFormView(generic.BSModalUpdateView):
     success_message = '更新しました'
     success_url = reverse_lazy('Ajax_test:list')
 
-def deleteActualWork(request, todo_id):
-    item = ActualWork.objects.get(pk=todo_id)
+def deleteActualWork(request, aw_id):
+    item = ActualWork.objects.get(pk=aw_id)
     item.delete()
-    messages.success = (request, ('削除しました'))
-    return redirect('Ajax_test:list')
+    return HttpResponse('success')

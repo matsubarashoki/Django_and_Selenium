@@ -32,7 +32,8 @@ INSTALLED_APPS = [
     'Ajax_test.apps.AjaxTestConfig',
     #modal用
     'bootstrap_modal_forms',
-    'widget_tweaks'
+    'widget_tweaks',
+    #'django.contrib.humanize'#三桁カンマ
     ]
 
 MIDDLEWARE = [
