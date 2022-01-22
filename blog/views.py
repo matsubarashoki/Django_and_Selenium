@@ -1,16 +1,17 @@
 import logging
 from re import template
+from telnetlib import STATUS
 from typing import List
 from django.contrib.messages.api import success
 from django.db.models import query
-from django.http import Http404
+from django.http import Http404,HttpResponse
 from django.db.models.query import QuerySet
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import generic
 from django.contrib import messages
 from django.urls import reverse_lazy
 from blog import models
-from blog.models import BlogPost,Comment
+from blog.models import BlogPost,Comment,Like
 from blog.form import CommentForm, InquiryForm , BlogPostForm
 
 logger = logging.getLogger(__name__)
@@ -161,3 +162,18 @@ class ArticleView(generic.View):
 
 class TableView(generic.TemplateView):
     template_name = "table.html"
+
+
+def Like_request(request):
+    """いいねボタン処理"""
+    if request.method == 'GET':
+        blog_pk = request.GET.get('blog_pk')
+        print(blog_pk)
+        blog = BlogPost.objects.get(pk = blog_pk)
+        print(blog)
+        m = Like( blogpost=blog, comment=None, good_user=request.user) #こんな省略あるんか
+        m.save()
+        count = Like.objects.all().count()
+        return HttpResponse(count)
+    else:
+        return HttpResponse("unsuccesful")

@@ -21,4 +21,7 @@ urlpatterns = [
     path('article', views.ArticleView.as_view(), name='article'),
 
     path('table', views.TableView.as_view(), name='table'),
+
+    path('like', views.Like_request, name='like'),
+
 ]
