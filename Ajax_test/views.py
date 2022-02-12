@@ -1,4 +1,3 @@
-import imp
 from pyexpat.errors import messages
 from django import template
 from django.forms import BaseModelForm

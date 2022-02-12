@@ -1,4 +1,3 @@
-from re import T
 from django.db import models
 from django.core import validators
 from user_setting.models import CustomUser
