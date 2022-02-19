@@ -24,4 +24,6 @@ urlpatterns = [
 
     path('like', views.Like_request, name='like'),
 
+    path('calender', views.CalenderView.as_view(), name='calender'),
+
 ]

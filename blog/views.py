@@ -159,6 +159,9 @@ class ArticleView(generic.View):
 class TableView(generic.TemplateView):
     template_name = "table.html"
 
+class CalenderView(generic.TemplateView):
+    template_name = "calender.html"
+
 
 def Like_request(request):
     """いいねボタン処理"""

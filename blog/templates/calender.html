@@ -1,0 +1,36 @@
+<!-- ベーステンプレートの読み込み-->
+{% extends 'blog_base.html' %}
+<!-- static をロード-->
+{% load static %}
+
+<!-- ヘッダの設定-->
+{% block header %}
+<header class="masthead" style="height: 3rem;">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="post-heading">
+                    <!--投稿記事のタイトル <h1>タブの要素を書き換える。レコードをblogで参照し、titleフィールドの値を出力-->
+                    <h1>カレンダー</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+{% endblock %}
+
+<!-- ここからコンテンツ -->
+{% block contents %}
+
+<div id='calendar'></div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth'
+        });
+        calendar.render();
+    });
+</script>
+
+{% endblock %}
